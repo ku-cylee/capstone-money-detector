@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyDetector.Android", "Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyDetector.iOS", "MoneyDetector.iOS\MoneyDetector.iOS.csproj", "{A0AECFED-5534-476B-BDDB-2C5C19A84E35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyDetector", "MoneyDetector\MoneyDetector.csproj", "{39F449B7-EA3F-420C-A13B-5DBA6B24E523}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyDetector", "MoneyDetector\MoneyDetector.csproj", "{39F449B7-EA3F-420C-A13B-5DBA6B24E523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
