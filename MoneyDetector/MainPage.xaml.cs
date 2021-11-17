@@ -7,7 +7,7 @@ namespace MoneyDetector {
         public MainPage() {
             InitializeComponent();
 
-            CapturePhoto();
+            //CapturePhoto();
         }
 
         public async void CapturePhoto() {
