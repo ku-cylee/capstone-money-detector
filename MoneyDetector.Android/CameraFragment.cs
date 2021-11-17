@@ -65,6 +65,11 @@ namespace MoneyDetector.Droid {
 
         #region Overrides
 
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+            => inflater.Inflate(Resource.Layout.CameraFragment, null);
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
+            => texture = view.FindViewById<AutoFitTextureView>(Resource.Id.cameratexture);
+
         public override void OnPause() {
             CloseSession();
             StopBackgroundThread();
