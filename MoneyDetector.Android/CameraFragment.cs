@@ -410,7 +410,30 @@ namespace MoneyDetector.Droid {
         void TextureView.ISurfaceTextureListener.OnSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height)
             => ConfigureTransform(width, height);
 
-        void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) { }
+        private DateTime lastCapturedAt = DateTime.UtcNow;
+        private TimeSpan CAPTURE_TIME_INTERVAL = TimeSpan.FromMilliseconds(200);
+
+        async void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) {
+            var currentTime = DateTime.UtcNow;
+            var sinceLastCapture = currentTime - lastCapturedAt;
+            if (sinceLastCapture < CAPTURE_TIME_INTERVAL) return;
+
+            lastCapturedAt = currentTime;
+
+            var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
+            byte[] imageBytes = null;
+
+            using (var imageStream = new System.IO.MemoryStream()) {
+                await image.CompressAsync(Bitmap.CompressFormat.Jpeg, 80, imageStream);
+                image.Recycle();
+                imageBytes = imageStream.ToArray();
+            }
+
+            // Code for saving image as file
+            var saveDirectory = Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath;
+            var filePath = System.IO.Path.Join(saveDirectory, $"{currentTime}.jpg");
+            _ = System.IO.File.WriteAllBytesAsync(filePath, imageBytes);
+        }
 
         #endregion
     }

@@ -4,7 +4,6 @@
              xmlns:local="clr-namespace:MoneyDetector;assembly=MoneyDetector"
              x:Class="MoneyDetector.MainPage">
     <StackLayout>
-        <Label Text="Camera Preview:"/>
         <local:CameraPreview Camera="Rear"
                              HorizontalOptions="FillAndExpand"
                              VerticalOptions="FillAndExpand"/>
