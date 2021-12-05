@@ -420,7 +420,6 @@ namespace MoneyDetector.Droid {
                 var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
                 using (var imageStream = new MemoryStream()) {
                     await image.CompressAsync(Bitmap.CompressFormat.Jpeg, 80, imageStream);
-                    image.Recycle();
                 }
 
                 var moneyValue = new MoneyValue(imageBytes);

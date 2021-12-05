@@ -9,7 +9,7 @@ namespace MoneyDetector {
         private DateTime lastPlayedAt = DateTime.UtcNow;
         private readonly TimeSpan AUDIO_PLAY_INTERVAL = TimeSpan.FromMilliseconds(10 * 1000);
 
-        public readonly TextToSpeech tts = new TextToSpeech(App.Config.TtsApiKey);
+        public readonly TextToSpeech tts = new TextToSpeech(App.Config.TTS_API_KEY);
 
         public static readonly BindableProperty CameraProperty = BindableProperty.Create(
             propertyName: "Camera",

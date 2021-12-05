@@ -16,7 +16,6 @@ namespace MoneyDetector {
         public static Configuration Config {
             get {
                 if (config == null) LoadConfig();
-
                 return config;
             }
         }
@@ -32,13 +31,10 @@ namespace MoneyDetector {
             }
         }
 
-        protected override void OnStart() {
-        }
+        protected override void OnStart() {}
 
-        protected override void OnSleep() {
-        }
+        protected override void OnSleep() {}
 
-        protected override void OnResume() {
-        }
+        protected override void OnResume() {}
     }
 }

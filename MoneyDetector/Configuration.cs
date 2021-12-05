@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MoneyDetector {
+﻿namespace MoneyDetector {
     public class Configuration {
-        public string TtsApiKey { get; set; }
+        public string TTS_API_KEY { get; set; }
     }
 }
