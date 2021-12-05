@@ -13,6 +13,7 @@ using Java.Lang;
 using Java.Util.Concurrent;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms.Platform.Android;
@@ -410,29 +411,19 @@ namespace MoneyDetector.Droid {
         void TextureView.ISurfaceTextureListener.OnSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height)
             => ConfigureTransform(width, height);
 
-        private DateTime lastCapturedAt = DateTime.UtcNow;
-        private TimeSpan CAPTURE_TIME_INTERVAL = TimeSpan.FromMilliseconds(200);
-
         async void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) {
-            var currentTime = DateTime.UtcNow;
-            var sinceLastCapture = currentTime - lastCapturedAt;
-            if (sinceLastCapture < CAPTURE_TIME_INTERVAL) return;
-
-            lastCapturedAt = currentTime;
+            if (!Element.DoCapture()) return;
 
             var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
             byte[] imageBytes = null;
 
-            using (var imageStream = new System.IO.MemoryStream()) {
+            using (var imageStream = new MemoryStream()) {
                 await image.CompressAsync(Bitmap.CompressFormat.Jpeg, 80, imageStream);
                 image.Recycle();
                 imageBytes = imageStream.ToArray();
             }
 
-            // Code for saving image as file
-            var saveDirectory = Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath;
-            var filePath = System.IO.Path.Join(saveDirectory, $"{currentTime}.jpg");
-            _ = System.IO.File.WriteAllBytesAsync(filePath, imageBytes);
+            Element.SpeakMoneyValueFromImage(imageBytes);
         }
 
         #endregion

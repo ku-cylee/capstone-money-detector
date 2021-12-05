@@ -71,7 +71,6 @@ namespace MoneyDetector.Droid {
                     break;
             }
         }
-
         protected override void Dispose(bool disposing) {
             if (disposed) return;
 

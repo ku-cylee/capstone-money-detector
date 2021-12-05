@@ -1,6 +1,7 @@
-﻿using System;
+﻿using System.IO;
+using System.Reflection;
+using Newtonsoft.Json;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace MoneyDetector {
     public partial class App : Application {
@@ -8,6 +9,27 @@ namespace MoneyDetector {
             InitializeComponent();
 
             MainPage = new MainPage();
+        }
+
+        private static Configuration config;
+
+        public static Configuration Config {
+            get {
+                if (config == null) LoadConfig();
+
+                return config;
+            }
+        }
+
+        private static void LoadConfig() {
+            var configResourceStream = Assembly.GetAssembly(typeof(Configuration)).GetManifestResourceStream("MoneyDetector.appsettings.json");
+
+            if (configResourceStream == null) return;
+
+            using (var stream = new StreamReader(configResourceStream)) {
+                var jsonString = stream.ReadToEnd();
+                config = JsonConvert.DeserializeObject<Configuration>(jsonString);
+            }
         }
 
         protected override void OnStart() {
