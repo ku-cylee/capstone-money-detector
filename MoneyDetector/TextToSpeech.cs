@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Net;
-using System.Net.Http;
 
 namespace MoneyDetector {
     public class TextToSpeech {
@@ -14,7 +13,7 @@ namespace MoneyDetector {
             this.apiToken = $"KakaoAK {apiToken}";
         }
 
-        public void GetSpeech(string text) {
+        public byte[] GetSpeech(string text) {
             var request = (HttpWebRequest)WebRequest.Create(API_URI);
             request.Method = "POST";
             request.Timeout = TIMEOUT;
@@ -25,6 +24,10 @@ namespace MoneyDetector {
             using (var reqStream = request.GetRequestStream()) reqStream.Write(bytes, 0, bytes.Length);
 
             var resp = request.GetResponse();
+            using (var audioStream = new MemoryStream()) {
+                resp.GetResponseStream().CopyTo(audioStream);
+                return audioStream.ToArray();
+            }
         }
     }
 }

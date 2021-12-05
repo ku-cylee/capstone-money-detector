@@ -34,7 +34,7 @@ namespace MoneyDetector {
 
         private int GetTotalValue() =>
             10 * count10 + 50 * count50 + 100 * count100 + 500 * count500
-            + 1000 * count1000 + 5000 * count5000 + 10000 * count10000 + 500000 * count50000;
+            + 1000 * count1000 + 5000 * count5000 + 10000 * count10000 + 50000 * count50000;
 
         public override string ToString() => $"{GetTotalValue()}원입니다.";
 

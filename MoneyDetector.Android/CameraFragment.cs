@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.Hardware.Camera2;
 using Android.Hardware.Camera2.Params;
+using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -412,18 +413,28 @@ namespace MoneyDetector.Droid {
             => ConfigureTransform(width, height);
 
         async void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) {
-            if (!Element.DoCapture()) return;
+            try {
+                if (!Element.DoCapture() || !Element.DoPlay()) return;
 
-            var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
-            byte[] imageBytes = null;
+                byte[] imageBytes = null;
+                var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
+                using (var imageStream = new MemoryStream()) {
+                    await image.CompressAsync(Bitmap.CompressFormat.Jpeg, 80, imageStream);
+                    image.Recycle();
+                }
 
-            using (var imageStream = new MemoryStream()) {
-                await image.CompressAsync(Bitmap.CompressFormat.Jpeg, 80, imageStream);
-                image.Recycle();
-                imageBytes = imageStream.ToArray();
-            }
+                var moneyValue = new MoneyValue(imageBytes);
+                if (!moneyValue.IsDetected) return;
 
-            Element.SpeakMoneyValueFromImage(imageBytes);
+                var audioBytes = Element.tts.GetSpeech(moneyValue.ToString());
+                var audioBase64 = Convert.ToBase64String(audioBytes, 0, audioBytes.Length);
+                var player = new MediaPlayer();
+                player.SetDataSource($"data:audio/mp3;base64,{audioBase64}");
+                player.Prepare();
+                player.Start();
+
+                Element.UpdatePlayedTime();
+            } catch {}
         }
 
         #endregion
