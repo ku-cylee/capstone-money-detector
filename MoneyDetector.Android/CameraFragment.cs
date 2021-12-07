@@ -48,6 +48,8 @@ namespace MoneyDetector.Droid {
 
         CameraManager Manager => manager ??= (CameraManager)Context.GetSystemService(Context.CameraService);
 
+        MoneyRecognizer recognizer = new MoneyRecognizer();
+
         bool IsBusy {
             get => device == null || busy;
             set { busy = value; }
@@ -415,14 +417,9 @@ namespace MoneyDetector.Droid {
         async void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) {
             try {
                 if (!Element.DoCapture() || !Element.DoPlay()) return;
-
-                byte[] imageBytes = null;
                 var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
-                using (var imageStream = new MemoryStream()) {
-                    await image.CompressAsync(Bitmap.CompressFormat.Jpeg, 80, imageStream);
-                }
 
-                var moneyValue = new MoneyValue(imageBytes);
+                var moneyValue = recognizer.GetMoneyValue(image);
                 if (!moneyValue.IsDetected) return;
 
                 var audioBytes = Element.tts.GetSpeech(moneyValue.ToString());

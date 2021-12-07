@@ -56,6 +56,9 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.TensorFlow.Lite">
+      <Version>2.5.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoFitTextureView.cs" />
@@ -64,10 +67,14 @@
     <Compile Include="CameraPreviewRenderer.cs" />
     <Compile Include="CameraStateListener.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="MoneyRecognizer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\moneyvalue-detection-model.tflite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
