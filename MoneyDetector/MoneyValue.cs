@@ -1,26 +1,23 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace MoneyDetector {
     public class MoneyValue {
-        private int count10 = 0;
-        private int count50 = 0;
-        private int count100 = 0;
-        private int count500 = 0;
-        private int count1000 = 0;
-        private int count5000 = 0;
-        private int count10000 = 0;
-        private int count50000 = 0;
-        private bool isDetected;
-        private const float DETECTION_THRESHOLD = .4F;
+        private readonly int count10 = 0;
+        private readonly int count50 = 0;
+        private readonly int count100 = 0;
+        private readonly int count500 = 0;
+        private readonly int count1000 = 0;
+        private readonly int count5000 = 0;
+        private readonly int count10000 = 0;
+        private readonly int count50000 = 0;
+        private readonly bool isDetected;
+        private const float DETECTION_THRESHOLD = .5F;
 
         public bool IsDetected {
             get => isDetected;
         }
 
         public MoneyValue(float[] modelResult) {
-            Console.WriteLine(string.Join(" ", modelResult));
-
             float maxValue = modelResult.Max();
             isDetected = maxValue > DETECTION_THRESHOLD;
             if (!isDetected) return;
