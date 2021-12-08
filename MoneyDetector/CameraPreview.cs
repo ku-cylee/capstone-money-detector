@@ -4,10 +4,10 @@ using Xamarin.Forms;
 namespace MoneyDetector {
     public class CameraPreview : View {
         private DateTime lastCapturedAt = DateTime.MinValue;
-        private readonly TimeSpan CAPTURE_TIME_INTERVAL = TimeSpan.FromMilliseconds(200);
+        private readonly TimeSpan CAPTURE_TIME_INTERVAL = TimeSpan.FromMilliseconds(1000);
 
         private DateTime lastPlayedAt = DateTime.MinValue;
-        private readonly TimeSpan AUDIO_PLAY_INTERVAL = TimeSpan.FromMilliseconds(10 * 1000);
+        private readonly TimeSpan AUDIO_PLAY_INTERVAL = TimeSpan.FromMilliseconds(5 * 1000);
 
         public readonly TextToSpeech tts = new TextToSpeech(App.Config.TTS_API_KEY);
 

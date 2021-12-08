@@ -12,27 +12,29 @@ namespace MoneyDetector {
         private int count10000 = 0;
         private int count50000 = 0;
         private bool isDetected;
-        private const float DETECTION_THRESHOLD = .3F;
+        private const float DETECTION_THRESHOLD = .4F;
 
         public bool IsDetected {
             get => isDetected;
         }
 
         public MoneyValue(float[] modelResult) {
+            Console.WriteLine(string.Join(" ", modelResult));
+
             float maxValue = modelResult.Max();
             isDetected = maxValue > DETECTION_THRESHOLD;
             if (!isDetected) return;
 
             int maxIndex = modelResult.ToList().IndexOf(maxValue);
 
-            count10 = maxIndex == 3 ? 1 : 0;
-            count50 = maxIndex == 7 ? 1 : 0;
-            count100 = maxIndex == 2 ? 1 : 0;
-            count500 = maxIndex == 6 ? 1 : 0;
-            count1000 = maxIndex == 1 ? 1 : 0;
-            count5000 = maxIndex == 5 ? 1 : 0;
-            count10000 = maxIndex == 0 ? 1 : 0;
-            count50000 = maxIndex == 4 ? 1 : 0;
+            count10 = maxIndex == 0 ? 1 : 0;
+            count100 = maxIndex == 1 ? 1 : 0;
+            count1000 = maxIndex == 2 ? 1 : 0;
+            count10000 = maxIndex == 3 ? 1 : 0;
+            count50 = maxIndex == 4 ? 1 : 0;
+            count500 = maxIndex == 5 ? 1 : 0;
+            count5000 = maxIndex == 6 ? 1 : 0;
+            count50000 = maxIndex == 7 ? 1 : 0;
         }
 
         private int GetTotalValue() =>
