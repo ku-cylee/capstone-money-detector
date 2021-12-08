@@ -3,10 +3,8 @@ using Xamarin.Forms;
 
 namespace MoneyDetector {
     public class CameraPreview : View {
-        private DateTime lastCapturedAt = DateTime.MinValue;
+        private DateTime captureAfter = DateTime.UtcNow + TimeSpan.FromSeconds(5);
         private readonly TimeSpan CAPTURE_TIME_INTERVAL = TimeSpan.FromMilliseconds(1000);
-
-        private DateTime lastPlayedAt = DateTime.MinValue;
         private readonly TimeSpan AUDIO_PLAY_INTERVAL = TimeSpan.FromMilliseconds(5 * 1000);
 
         public readonly TextToSpeech tts = new TextToSpeech(App.Config.TTS_API_KEY);
@@ -23,22 +21,13 @@ namespace MoneyDetector {
         }
 
         public bool DoCapture() {
-            var currentTime = DateTime.UtcNow;
-            var sinceLastCapture = currentTime - lastCapturedAt;
-            if (sinceLastCapture < CAPTURE_TIME_INTERVAL) return false;
-
-            lastCapturedAt = currentTime;
-            return true;
+            var doCapture = DateTime.UtcNow >= captureAfter;
+            if (doCapture) captureAfter = DateTime.UtcNow + CAPTURE_TIME_INTERVAL;
+            return doCapture;
         }
 
-        public bool DoPlay() {
-            var currentTime = DateTime.UtcNow;
-            var sinceLastPlay = currentTime - lastPlayedAt;
-            return sinceLastPlay >= AUDIO_PLAY_INTERVAL;
-        }
-
-        public void UpdatePlayedTime() {
-            lastPlayedAt = DateTime.UtcNow;
+        public void UpdateNextCaptureOnRecognition() {
+            captureAfter = DateTime.UtcNow + AUDIO_PLAY_INTERVAL;
         }
     }
 }

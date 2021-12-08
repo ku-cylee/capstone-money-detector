@@ -414,22 +414,22 @@ namespace MoneyDetector.Droid {
         void TextureView.ISurfaceTextureListener.OnSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height)
             => ConfigureTransform(width, height);
 
-        async void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) {
+        void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) {
             try {
-                if (!Element.DoCapture() || !Element.DoPlay()) return;
+                if (!Element.DoCapture()) return;
                 var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
 
                 var moneyValue = recognizer.GetMoneyValue(image);
                 if (!moneyValue.IsDetected) return;
+                Element.UpdateNextCaptureOnRecognition();
 
                 var audioBytes = Element.tts.GetSpeech(moneyValue.ToString());
                 var audioBase64 = Convert.ToBase64String(audioBytes, 0, audioBytes.Length);
+
                 var player = new MediaPlayer();
                 player.SetDataSource($"data:audio/mp3;base64,{audioBase64}");
                 player.Prepare();
                 player.Start();
-
-                Element.UpdatePlayedTime();
             } catch {}
         }
 
