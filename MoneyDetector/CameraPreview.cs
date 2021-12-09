@@ -3,7 +3,7 @@ using Xamarin.Forms;
 
 namespace MoneyDetector {
     public class CameraPreview : View {
-        private DateTime captureAfter = DateTime.UtcNow + TimeSpan.FromSeconds(5);
+        private DateTime captureAfter = DateTime.UtcNow + TimeSpan.FromSeconds(7);
         private readonly TimeSpan CAPTURE_TIME_INTERVAL = TimeSpan.FromMilliseconds(1000);
         private readonly TimeSpan AUDIO_PLAY_INTERVAL = TimeSpan.FromMilliseconds(5 * 1000);
 

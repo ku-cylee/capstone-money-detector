@@ -402,6 +402,8 @@ namespace MoneyDetector.Droid {
             View?.SetBackgroundColor(Element.BackgroundColor.ToAndroid());
             cameraTemplate = CameraTemplate.Preview;
             await RetrieveCameraDevice();
+            var startMessageAudio = Element.tts.GetSpeech("화폐를 하나씩 인식시켜 주세요");
+            PlayAudioData(startMessageAudio);
         }
 
         bool TextureView.ISurfaceTextureListener.OnSurfaceTextureDestroyed(SurfaceTexture surface) {
@@ -425,18 +427,22 @@ namespace MoneyDetector.Droid {
                 if (!moneyValue.IsDetected) return;
                 Element.UpdateNextCaptureTime();
 
-                var audioBytes = Element.tts.GetSpeech(moneyValue.ToString());
-                var audioBase64 = Convert.ToBase64String(audioBytes, 0, audioBytes.Length);
-
-                var player = new MediaPlayer();
-                player.SetDataSource($"data:audio/mp3;base64,{audioBase64}");
-                player.Prepare();
-                player.Start();
+                var audio = Element.tts.GetSpeech(moneyValue.ToString());
+                PlayAudioData(audio);
             } catch (System.Exception ex) {
                 Console.WriteLine(ex.Message);
             } finally {
                 image.Recycle();
             }
+        }
+
+        private void PlayAudioData(byte[] audioBytes) {
+            var audioBase64 = Convert.ToBase64String(audioBytes, 0, audioBytes.Length);
+
+            var player = new MediaPlayer();
+            player.SetDataSource($"data:audio/mp3;base64,{audioBase64}");
+            player.Prepare();
+            player.Start();
         }
 
         #endregion
