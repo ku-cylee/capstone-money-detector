@@ -12,9 +12,9 @@ using AndroidX.Core.Content;
 using AndroidX.Fragment.App;
 using Java.Lang;
 using Java.Util.Concurrent;
+using MoneyDetector.Droid.Recognizers;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms.Platform.Android;
@@ -39,7 +39,7 @@ namespace MoneyDetector.Droid {
         HandlerThread backgroundThread;
         Handler backgroundHandler = null;
 
-        Semaphore captureSessionOpenCloseLock = new Semaphore(1);
+        readonly Semaphore captureSessionOpenCloseLock = new Semaphore(1);
 
         AutoFitTextureView texture;
 
@@ -47,8 +47,6 @@ namespace MoneyDetector.Droid {
         TaskCompletionSource<bool> permissionsRequested;
 
         CameraManager Manager => manager ??= (CameraManager)Context.GetSystemService(Context.CameraService);
-
-        MoneyRecognizer recognizer = new MoneyRecognizer();
 
         bool IsBusy {
             get => device == null || busy;
@@ -414,12 +412,16 @@ namespace MoneyDetector.Droid {
         void TextureView.ISurfaceTextureListener.OnSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height)
             => ConfigureTransform(width, height);
 
-        void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) {
-            try {
-                if (!Element.DoCapture()) return;
-                var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
+        private readonly BinaryRecognizer binaryRecognizer = new BinaryRecognizer();
+        private readonly LabelRecognizer labelRecognizer = new LabelRecognizer();
 
-                var moneyValue = recognizer.GetMoneyValue(image);
+        void TextureView.ISurfaceTextureListener.OnSurfaceTextureUpdated(SurfaceTexture surface) {
+            if (!Element.DoCapture()) return;
+            var image = Bitmap.CreateBitmap(texture.Bitmap, 0, 0, texture.Bitmap.Width, texture.Bitmap.Height);
+
+            try {
+                if (!binaryRecognizer.IsMoney(image)) return;
+                var moneyValue = labelRecognizer.GetMoneyValue(image);
                 if (!moneyValue.IsDetected) return;
                 Element.UpdateNextCaptureOnRecognition();
 
@@ -430,7 +432,11 @@ namespace MoneyDetector.Droid {
                 player.SetDataSource($"data:audio/mp3;base64,{audioBase64}");
                 player.Prepare();
                 player.Start();
-            } catch {}
+            } catch (System.Exception ex) {
+                Console.WriteLine(ex.Message);
+            } finally {
+                image.Recycle();
+            }
         }
 
         #endregion

@@ -67,12 +67,15 @@
     <Compile Include="CameraPreviewRenderer.cs" />
     <Compile Include="CameraStateListener.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="MoneyRecognizer.cs" />
+    <Compile Include="Recognizers\BinaryRecognizer.cs" />
+    <Compile Include="Recognizers\LabelRecognizer.cs" />
+    <Compile Include="Recognizers\ImageRecognizer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\1208_128.tflite" />
+    <AndroidAsset Include="Assets\label-model-1208.tflite" />
+    <AndroidAsset Include="Assets\binary-model-1208.tflite" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

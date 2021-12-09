@@ -5,8 +5,8 @@ using Java.Nio;
 using Java.Nio.Channels;
 using Xamarin.TensorFlow.Lite;
 
-namespace MoneyDetector.Droid {
-    public class MoneyRecognizer {
+namespace MoneyDetector.Droid.Recognizers {
+    public class ImageRecognizer {
         private const int INPUT_TYPE_SIZE = sizeof(float);
         private const float COLOR_NORMALIZER = 255;
 
@@ -18,8 +18,10 @@ namespace MoneyDetector.Droid {
 
         private readonly Interpreter model;
 
-        public MoneyRecognizer() {
-            var fd = Application.Context.Assets.OpenFd("1208_128.tflite");
+        public ImageRecognizer() { }
+
+        public ImageRecognizer(string modelFileName) {
+            var fd = Application.Context.Assets.OpenFd(modelFileName);
             var inputStream = new FileInputStream(fd.FileDescriptor);
             model = new Interpreter(inputStream.Channel.Map(FileChannel.MapMode.ReadOnly, fd.StartOffset, fd.DeclaredLength));
 
@@ -31,16 +33,7 @@ namespace MoneyDetector.Droid {
             labelsCount = outputShape[1];
         }
 
-        public MoneyValue GetMoneyValue(Bitmap image) {
-            var input = GetModelInput(image);
-            var output = Java.Lang.Object.FromArray(new float[1][] { new float[labelsCount] });
-
-            model.Run(input, output);
-
-            return new MoneyValue(output.ToArray<float[]>()[0]);
-        }
-
-        private ByteBuffer GetModelInput(Bitmap image) {
+        private ByteBuffer GetModelInputFromImage(Bitmap image) {
             var resized = Bitmap.CreateScaledBitmap(image, inputWidth, inputHeight, true);
 
             var modelInputSize = INPUT_TYPE_SIZE * inputWidth * inputHeight * inputDepth;
@@ -56,8 +49,18 @@ namespace MoneyDetector.Droid {
                 }
             }
 
-            image.Recycle();
             return byteBuffer;
+        }
+
+        private Java.Lang.Object GetModelOutput() => Java.Lang.Object.FromArray(new float[1][] { new float[labelsCount] });
+
+        protected float[] GetRecognitionResult(Bitmap image) {
+            var input = GetModelInputFromImage(image);
+            var output = GetModelOutput();
+
+            model.Run(input, output);
+
+            return output.ToArray<float[]>()[0];
         }
     }
 }
