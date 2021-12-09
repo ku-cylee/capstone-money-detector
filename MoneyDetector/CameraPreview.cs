@@ -26,7 +26,7 @@ namespace MoneyDetector {
             return doCapture;
         }
 
-        public void UpdateNextCaptureOnRecognition() {
+        public void UpdateNextCaptureTime() {
             captureAfter = DateTime.UtcNow + AUDIO_PLAY_INTERVAL;
         }
     }

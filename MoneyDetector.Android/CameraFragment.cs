@@ -423,7 +423,7 @@ namespace MoneyDetector.Droid {
                 if (!binaryRecognizer.IsMoney(image)) return;
                 var moneyValue = labelRecognizer.GetMoneyValue(image);
                 if (!moneyValue.IsDetected) return;
-                Element.UpdateNextCaptureOnRecognition();
+                Element.UpdateNextCaptureTime();
 
                 var audioBytes = Element.tts.GetSpeech(moneyValue.ToString());
                 var audioBase64 = Convert.ToBase64String(audioBytes, 0, audioBytes.Length);

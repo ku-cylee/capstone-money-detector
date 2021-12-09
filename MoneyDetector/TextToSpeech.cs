@@ -6,8 +6,9 @@ using System.Net;
 namespace MoneyDetector {
     public class TextToSpeech {
         private readonly Uri API_URI = new Uri("https://kakaoi-newtone-openapi.kakao.com/v1/synthesize");
-        private readonly int TIMEOUT = 10 * 1000;
         private readonly string apiToken;
+
+        private const int TIMEOUT = 10 * 1000;
 
         public TextToSpeech(string apiToken) {
             this.apiToken = $"KakaoAK {apiToken}";
