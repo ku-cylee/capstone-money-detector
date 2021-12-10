@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\label-model-1208.tflite" />
-    <AndroidAsset Include="Assets\binary-model-1208.tflite" />
+    <AndroidAsset Include="Assets\binary-model-1209.tflite" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

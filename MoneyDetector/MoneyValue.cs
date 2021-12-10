@@ -11,18 +11,18 @@ namespace MoneyDetector {
         private readonly int count10000 = 0;
         private readonly int count50000 = 0;
         private readonly bool isDetected;
-        private const float DETECTION_THRESHOLD = .5F;
+        private const float DETECTION_THRESHOLD = .7F;
 
         public bool IsDetected {
             get => isDetected;
         }
 
         public MoneyValue(float[] modelResult) {
-            float maxValue = modelResult.Max();
+            var maxValue = modelResult.Max();
             isDetected = maxValue > DETECTION_THRESHOLD;
             if (!isDetected) return;
 
-            int maxIndex = modelResult.ToList().IndexOf(maxValue);
+            var maxIndex = modelResult.ToList().IndexOf(maxValue);
 
             count10 = maxIndex == 0 ? 1 : 0;
             count100 = maxIndex == 1 ? 1 : 0;
@@ -37,7 +37,7 @@ namespace MoneyDetector {
         private int GetTotalValue() =>
             10 * count10 + 50 * count50 + 100 * count100 + 500 * count500
             + 1000 * count1000 + 5000 * count5000 + 10000 * count10000 + 50000 * count50000;
-
+            
         public override string ToString() => $"{GetTotalValue()}원입니다.";
     }
 }
