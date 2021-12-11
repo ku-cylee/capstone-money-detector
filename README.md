@@ -7,13 +7,13 @@ This application is designed for visually impaired people that suffer difficulti
 Image recognition model was implemented using Tensorflow library. Training data was retrieved by taking 20 photos following Korean cashes, respectively.
 
 * 50000KRW banknote
-    - '가'(1st): [front](./images/50000krw-ga-observe.png), [back](./images/50000krw-ga-reverse.png)
+    - '가'(1st): [front](./images/50000krw-ga-observe.jpg), [back](./images/50000krw-ga-reverse.jpg)
 * 10000KRW banknote
-    - '바'(6th): [front](./images/10000krw-ba-observe.png), [back](./images/10000krw-ba-reverse.png)
+    - '바'(6th): [front](./images/10000krw-ba-observe.jpg), [back](./images/10000krw-ba-reverse.jpg)
 * 5000KRW banknote
-    - '마'(5th): [front](./images/5000krw-ma-observe.png), [back](./images/5000krw-ma-reverse.png)
+    - '마'(5th): [front](./images/5000krw-ma-observe.jpg), [back](./images/5000krw-ma-reverse.jpg)
 * 1000KRW banknote
-    - '다'(3rd): [front](./images/1000krw-da-observe.png), [back](./images/1000krw-da-reverse.png)
+    - '다'(3rd): [front](./images/1000krw-da-observe.jpg), [back](./images/1000krw-da-reverse.jpg)
 * 500KRW coin
     - ['가'(1st)](./images/500krw-ga.png)
 * 100KRW coin
@@ -58,6 +58,7 @@ You can see a demo of the application [here](https://www.youtube.com/watch?v=Ho0
 
 ## Limitations
 
+The project was for COSE489 Capstone Design course, and is no longer maintained.
 * Relatively low accuracy on 50000KRW banknotes, 100KRW coins, 50KRW coins, 10KRW coins.
     - Possible solution is more and more training data sets
 * Unable to recognize multiple cashes at once
