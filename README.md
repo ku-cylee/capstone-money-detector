@@ -58,7 +58,7 @@ Project requires an API key for voice synthesis service. Create an app, issue a 
 
 ## Demo Video
 
-You can see a demo of the application [here](https://www.youtube.com/watch?v=Ho0NijayA1c). The application recognizes cashes well, and also recognizes the background as non-cash on 00:24.
+You can see a demo of the application [here](https://youtu.be/nIHqrsdGbrU). The application recognizes cashes well, and also recognizes the background as non-cash on 00:24.
 
 ## Limitations
 
